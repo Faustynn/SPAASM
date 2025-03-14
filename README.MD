@@ -71,9 +71,59 @@ The program supports processing large files, including those larger than 64KB.
 
 ---
 
-## Zadanie2
+## Zadanie2 - Systémové programovanie
 
-### Coming Soon...
+## Project Structure
+```
+Zadanie2
+├── code
+│   ├── client.c        # Client functionality implementation
+│   ├── server.c        # Server functionality implementation
+│   ├── main.c          # Entry point of the application
+│   ├── global.c        # Implement global functions
+│   ├── global.h        # Header for global functions file 
+│   ├── utils.c         # Utility functions for shared functionalities
+│   └── utils.h         # Header file for utility functions
+├──client               # Compiled client script, for running
+├──server               # Compiled server script, for running
+└── Makefile             # Build instructions for the project
+```
+
+## Building the Project
+To build the project, navigate to the project directory and run the following command:
+
+```
+make
+```
+
+This will compile the source files and create the executable file
+
+## Run  Application
+After building the project, you can run the application in either server or client mode:
+
+- To run as a server:
+    On localhost 8088 port
+  ```
+  ./server -s
+  ```
+
+    On your post and address
+    
+  ```
+  ./server -s <server_address> -p <port>
+  ```
+
+- To run as a client:
+  ```
+  ./client -c <server_address> -p <port>
+  ```
+
+Replace `<server_address>` with the address of the server and `<port>` with your port number
+
+## Features
+- Internal commands: `/help`, `/quit`, `/halt`
+- Handles multiple client connections
+- Provides a prompt displaying the current time, user, and hostname
 
 ---
 

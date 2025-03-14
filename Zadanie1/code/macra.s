@@ -22,6 +22,7 @@
     mov x2, #4096                // Read 4096 bytes from the file
     mov x16, #3                  // Load 3 (read command) into register x16
     svc #0x80                    // Execute the system call to read 4096 bytes from the file
+
 .endm // In other words, we execute read(file_descriptor, buffer, 4096)
 
 

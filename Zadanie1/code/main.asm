@@ -267,7 +267,7 @@ collect_digits:                                 // Convert the number to a strin
 reverse_loop:
     cmp x4, x5                                  // Are we at the end of the buffer?
     bge print_result                            // If yes, proceed to printing
-    ldrb w6, [x4]                               // Load 1 byte from the START of the buffer
+    ldrb w6, [x4], #1                            // Load 1 byte from the START of the buffer
     ldrb w7, [x5]                               // Load 1 byte from the END of the buffer
     strb w7, [x4], #1                           // Swap the start with the end
     strb w6, [x5], #-1                          // Swap the end with the start
