@@ -1,0 +1,11 @@
+[2025-03-24 15:29:17] PID:38429 CODE:127 sh: [A: command not found
+
+[2025-03-24 15:29:28] PID:38429 CODE:0 Makefile
+client
+code
+config
+logs
+server
+
+[2025-03-24 15:29:46] PID:38429 CODE:0 Hello World
+

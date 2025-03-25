@@ -20,8 +20,6 @@
 #include <sys/stat.h>
 #include <limits.h>
 
-#define PROPERTIES_FILE "config/config.properties"
-
 #ifndef HOST_NAME_MAX
 #define HOST_NAME_MAX 255
 #endif
@@ -30,7 +28,7 @@ void generate_prompt(char *prompt, int prompt_size);
 char* print_help(void);
 void cleanup(int max_clients);
 
-void server_mode(int port, int buffer_size, int max_clients, int max_socket_listen_conn, char prompt[], int prompt_size);
+void server_mode(int port, int buffer_size, int max_clients, int max_socket_listen_conn, char prompt[], int prompt_size, char* logfile);
 void client_mode(const char *server_address, int port, int buffer_size, char prompt[], int prompt_size);
 
 #endif

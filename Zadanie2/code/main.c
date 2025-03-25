@@ -50,7 +50,25 @@ int main(int argc, char *argv[]) {
     int max_clients = 0;
     int max_socket_listen_conn = 0;
 
-    read_properties(PROPERTIES_FILE, server_address, &port, &prompt_size, &buffer_size, &max_clients, &max_socket_listen_conn);
+    const char *properties_file = getenv("PROPERTIES_FILE");
+    if (properties_file == NULL) {
+        fprintf(stderr, "Environment variable PROPERTIES_FILE is not set.\n");
+        exit(EXIT_FAILURE);
+    }
+    const char *prompt = getenv("PROMPT");
+    if (prompt == NULL) {
+        fprintf(stderr, "Environment variable PROMPT is not set.\n");
+        exit(EXIT_FAILURE);
+    }
+    const char *log_file_path = getenv("LOG_FILE");
+    if (log_file_path == NULL) {
+        fprintf(stderr, "Environment variable LOG_FILE is not set.\n");
+        exit(EXIT_FAILURE);
+    }
+
+
+
+    read_properties(properties_file, server_address, &port, &prompt_size, &buffer_size, &max_clients, &max_socket_listen_conn);
     char prompt[prompt_size];
     generate_prompt(prompt, prompt_size);
 
@@ -69,13 +87,49 @@ int main(int argc, char *argv[]) {
         print_help();
     } else if (argc == 2 && strcmp(argv[1], "-s") == 0) {
         printf("Starting server on %s:%d\n", server_address, port);
-        server_mode(port, buffer_size, max_clients, max_socket_listen_conn, prompt, prompt_size);
+        server_mode(port, buffer_size, max_clients, max_socket_listen_conn, prompt, prompt_size, NULL);
     } else if (argc == 5 && strcmp(argv[1], "-s") == 0 && strcmp(argv[3], "-p") == 0) {
         strcpy(server_address, argv[2]);
         port = atoi(argv[4]);
         printf("Starting server on %s:%d\n", server_address, port);
-        server_mode(port, buffer_size, max_clients, max_socket_listen_conn, prompt, prompt_size);
-    } else if (argc == 5 && strcmp(argv[1], "-c") == 0 && strcmp(argv[3], "-p") == 0) {
+        server_mode(port, buffer_size, max_clients, max_socket_listen_conn, prompt, prompt_size, NULL);
+    } else if(argc == 7 && strcmp(argv[1], "-s") == 0 && strcmp(argv[3], "-p") == 0 && strcmp(argv[5], "-l") == 0) { // loging mode
+        strcpy(server_address, argv[2]);
+        port = atoi(argv[4]);
+        char* logfile;
+        if(argv[6] == NULL) {
+            logfile = log_file_path; 
+        }else{logfile = argv[6];}
+        printf("Connecting to server at %s:%d with logs: %s\n", server_address, port, logfile);
+        server_mode(port, buffer_size, max_clients, max_socket_listen_conn, prompt, prompt_size, logfile);
+
+    } else if(argc == 6 && strcmp(argv[1], "-s") == 0 && strcmp(argv[3], "-p") == 0 && strcmp(argv[5], "-v") == 0) { // stderr info
+        strcpy(server_address, argv[2]); 
+        port = atoi(argv[4]);
+
+        server_mode(port, buffer_size, max_clients, max_socket_listen_conn, prompt, prompt_size, NULL);
+    } else if(argc == 7 && strcmp(argv[1], "-c") == 0 && strcmp(argv[3], "-p") == 0 && strcmp(argv[5], "-c") == 0) { // make command and end
+        strcpy(server_address, argv[2]); 
+        port = atoi(argv[4]);
+        char* command = argv[6];
+        printf("Make command to server at %s:%d\n", server_address, port);
+      //  client_mode(server_address, port, buffer_size, prompt, prompt_size);
+
+
+
+
+    } else if(argc == 7 && strcmp(argv[1], "-c") == 0 && strcmp(argv[3], "-p") == 0 && strcmp(argv[5], "-C") == 0) { // load config from file
+        
+        // TODO
+
+
+
+    } else if (argc == 3 && strcmp(argv[1], "-c") == 0) {
+        port = atoi(argv[2]);
+        printf("Connecting to server at %s:%d\n", server_address, port);
+        client_mode(server_address, port, buffer_size, prompt, prompt_size);
+        
+    }else if (argc == 5 && strcmp(argv[1], "-c") == 0 && strcmp(argv[3], "-p") == 0) {
         strcpy(server_address, argv[2]);
         port = atoi(argv[4]);
         printf("Connecting to server at %s:%d\n", server_address, port);

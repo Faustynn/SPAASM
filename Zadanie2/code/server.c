@@ -27,13 +27,23 @@ void stop_server_signal(int signal) {
     is_running = 0;
 }
 
-void process_command(char *input, int client_fd) {
+void trim_newline(char *str) {
+    size_t len = strlen(str);
+    while (len > 0 && (str[len - 1] == '\n' || str[len - 1] == '\r' || str[len - 1] == ' ')) {
+        str[len - 1] = '\0';
+        len--;
+    }
+}
+
+void process_command(char *input, int client_fd,char* logfile) {
+    printf("Processing command: '%s'\n", input);
+
+    trim_newline(input);
+
     if (strcmp(input, "/help") == 0) {
+        printf("Sending help message to client\n");
         const char *help_message = print_help();
-        ssize_t bytes_written = write(client_fd, help_message, strlen(help_message));
-        if (bytes_written < (ssize_t)strlen(help_message)) {
-            perror("write incomplete");
-        }
+        write(client_fd, help_message, strlen(help_message));
     } else if (strcmp(input, "/halt") == 0) {
         stop_server_signal(0);
         const char *halt_message = "Server is stopping...\n";
@@ -41,22 +51,93 @@ void process_command(char *input, int client_fd) {
     } else if (strcmp(input, "/quit") == 0) {
         const char *quit_message = "Disconnecting from the server...\n";
         write(client_fd, quit_message, strlen(quit_message));
+    } else if (input[0] == '/') {
+        const char *error_message = "Unknown command. Type /help for available commands.\n";
+        write(client_fd, error_message, strlen(error_message));
     } else {
-        const char *unknown_command_message = "Unknown command\n";
-        ssize_t bytes_written = write(client_fd, unknown_command_message, strlen(unknown_command_message));
-        if (bytes_written < (ssize_t)strlen(unknown_command_message)) {
-            perror("write incomplete");
+        char command[1024];
+        snprintf(command, sizeof(command), "sh -c '%s 2>&1'", input);
+
+        FILE *fp = popen(command, "r");
+        if (fp == NULL) {
+            const char *error_message = "Failed to execute command\n";
+            write(client_fd, error_message, strlen(error_message));
+        } else {
+            size_t buffer_size = 1024;
+            size_t total_size = 0;
+            char *output = malloc(buffer_size);
+            if (output == NULL) {
+                const char *error_message = "Memory allocation failed\n";
+                write(client_fd, error_message, strlen(error_message));
+                pclose(fp);
+                return;
+            }
+
+            char temp_buffer[1024];
+            while (fgets(temp_buffer, sizeof(temp_buffer), fp) != NULL) {
+                size_t len = strlen(temp_buffer);
+                if (total_size + len + 1 > buffer_size) {
+                    buffer_size *= 2;
+                    char *new_output = realloc(output, buffer_size);
+                    if (new_output == NULL) {
+                        const char *error_message = "Memory reallocation failed\n";
+                        write(client_fd, error_message, strlen(error_message));
+                        free(output);
+                        pclose(fp);
+                        return;
+                    }
+                    output = new_output;
+                }
+                memcpy(output + total_size, temp_buffer, len);
+                total_size += len;
+            }
+
+            int status = pclose(fp);
+            if (status == -1 || total_size == 0) {
+                const char *error_message = "Command executed but returned no output\n";
+                write(client_fd, error_message, strlen(error_message));
+            } else {
+                output[total_size] = '\0';
+                write(client_fd, output, total_size);
+                printf("Command output: %s\n", output);
+            }
+
+             if(logfile!=NULL){
+                FILE *log = fopen(logfile, "a");
+                if (log == NULL) {
+                    perror("fopen");
+                    free(output);
+                }
+
+                time_t now = time(NULL);
+                struct tm *local_time = localtime(&now);
+                char timestamp[20];
+                strftime(timestamp, sizeof(timestamp), "%Y-%m-%d %H:%M:%S", local_time);
+
+                // Get proces ID
+                pid_t pid = getpid();
+                int end_code = WEXITSTATUS(status);
+
+                // Write log
+                fprintf(log, "[%s] PID:%d CODE:%d %s\n", timestamp, pid, end_code, output);
+                fflush(log);
+                fclose(log);
+            }
+            
+            free(output);
         }
     }
+    // clear
+    memset(input, 0, strlen(input));
 }
 
-void server_mode(int port, int buffer_size, int max_clients, int max_socket_listen_conn, char prompt[], int prompt_size) {
+void server_mode(int port, int buffer_size, int max_clients, int max_socket_listen_conn, char prompt[], int prompt_size, char* logfile) {
     generate_prompt(prompt, prompt_size);
     fd_set read_fds, master_fds;
     int max_fd;
     struct sockaddr_in server_addr;
     char buffer[buffer_size];
-    ssize_t bytes_received;
+    ssize_t bytes_received = 0;
     int client_count = 0;
 
     FD_ZERO(&master_fds);
@@ -152,7 +233,7 @@ void server_mode(int port, int buffer_size, int max_clients, int max_socket_list
                         buffer[bytes_received] = '\0';
                         generate_prompt(prompt, prompt_size);
                         printf("Received command: %s\n", buffer);
-                        process_command(buffer, i);
+                        process_command(buffer, i,logfile);
                     }
                 }
             }
