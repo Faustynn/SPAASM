@@ -1,6 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -I.
 
+# Dirs.
 CONFIG_FILE = config/config.properties
 LOGS_FILE = logs/logs.log
 
@@ -19,14 +20,14 @@ all: $(TARGETS)
 
 # Compile
 client: $(SRCS) $(HDRS) $(CONFIG_FILE)
-	$(CC) $(CFLAGS) $(SRCS) -o client
+	$(CC) $(CFLAGS) $(SRCS) -o client  
 
 server: $(SRCS) $(HDRS) $(CONFIG_FILE)
-	$(CC) $(CFLAGS) $(SRCS) -o server
+	$(CC) $(CFLAGS) $(SRCS) -o server 
 
 # Clean
 clean:
-	rm -f $(OBJS) $(TARGETS)
+	rm -f $(OBJS) $(TARGETS) 
 
 # Phony targets
 .PHONY: all clean client server

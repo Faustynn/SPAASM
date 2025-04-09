@@ -1,11 +1,132 @@
-[2025-03-24 15:29:17] PID:38429 CODE:127 sh: [A: command not found
-
-[2025-03-24 15:29:28] PID:38429 CODE:0 Makefile
+[2025-03-27 12:45:46] PID:53468 CODE:0 Makefile
 client
 code
 config
 logs
 server
 
-[2025-03-24 15:29:46] PID:38429 CODE:0 Hello World
+[2025-03-27 12:46:40] PID:53468 CODE:0 HELLO LOG FILE
+
+[2025-03-27 13:01:43] PID:55434 CODE:0 Makefile
+client
+code
+config
+logs
+server
+
+[2025-03-27 14:43:22] PID:64790 CODE:0 Makefile
+client
+code
+config
+logs
+server
+
+[2025-03-27 14:43:29] PID:64790 CODE:127 sh: ahaha: command not found
+
+[2025-03-27 14:44:30] PID:64790 CODE:127 sh: line 6: Content-Length:: command not found
+
+[2025-03-27 14:56:47] PID:64790 CODE:127 sh: line 6: Content-Length:: command not found
+
+[2025-04-02 17:28:55] PID:9949 CODE:0 Makefile
+client
+code
+config
+logs
+scripts
+server
+
+[2025-04-02 17:29:05] PID:9949 CODE:0 Hello
+
+[2025-04-02 18:23:26] PID:16037 CODE:0 
+[2025-04-02 18:32:27] PID:17139 CODE:0 Makefile
+client
+code
+config
+logs
+scripts
+server
+
+[2025-04-02 18:32:42] PID:17139 CODE:0 
+[2025-04-02 18:32:53] PID:17139 CODE:0 
+[2025-04-02 18:33:16] PID:17139 CODE:0 Makefile
+client
+code
+config
+logs
+scripts
+server
+
+[2025-04-08 20:00:54] PID:9353 CODE:0 Makefile
+client
+code
+config
+logs
+scripts
+server
+
+[2025-04-08 20:10:14] PID:9353 CODE:0 Makefile
+client
+code
+config
+logs
+scripts
+server
+
+[2025-04-09 01:20:22] PID:9353 CODE:0 total 304
+drwxr-xr-x  10 faustyn  staff    320 Apr  8 19:59 .
+drwxr-xr-x  10 faustyn  staff    320 Mar 13 23:29 ..
+-rw-r--r--   1 faustyn  staff    215 Apr  2 18:32 .env
+-rw-r--r--   1 faustyn  staff    583 Apr  2 17:52 Makefile
+-rwxr-xr-x   1 faustyn  staff  70536 Apr  8 19:59 client
+drwxr-xr-x   9 faustyn  staff    288 Mar 12 17:30 code
+drwxr-xr-x   4 faustyn  staff    128 Mar 27 12:51 config
+drwxr-xr-x   3 faustyn  staff     96 Mar 13 23:21 logs
+drwxr-xr-x   5 faustyn  staff    160 Mar 27 15:02 scripts
+-rwxr-xr-x   1 faustyn  staff  70536 Apr  8 19:59 server
+
+[2025-04-09 01:20:32] PID:9353 CODE:0 "Только это будет выведено"
+
+[2025-04-09 01:20:32] PID:9353 CODE:0 "Вторая команда"
+
+[2025-04-09 01:20:46] PID:9353 CODE:0 /Users/faustyn/Developer/STU/SPAASM/Projects/main/Zadanie2
+
+[2025-04-09 01:20:46] PID:9353 CODE:0 Makefile
+client
+code
+config
+logs
+scripts
+server
+
+[2025-04-09 01:20:46] PID:9353 CODE:0 "Несколько команд подряд"echo "Первая команда"
+
+[2025-04-09 01:20:46] PID:9353 CODE:0 "Вторая команда"
+
+[2025-04-09 01:20:59] PID:9353 CODE:1 Failed to execute command: tesr
+
+[2025-04-09 01:21:02] PID:9353 CODE:0 "Первая команда"
+
+[2025-04-09 01:21:02] PID:9353 CODE:0 "Вторая команда"
+
+[2025-04-09 01:21:17] PID:9353 CODE:1 
+[2025-04-09 01:21:48] PID:9353 CODE:1 
+[2025-04-09 01:22:06] PID:9353 CODE:1 
+[2025-04-09 01:22:11] PID:9353 CODE:1 "Вторая команда"
+
+[2025-04-09 01:22:25] PID:9353 CODE:0 
+[2025-04-09 01:24:37] PID:12658 CODE:0 
+[2025-04-09 01:24:45] PID:12658 CODE:1 
+[2025-04-09 01:28:21] PID:12658 CODE:0 
+[2025-04-09 01:28:39] PID:12658 CODE:1 
+[2025-04-09 03:41:06] PID:12658 CODE:0 
+[2025-04-09 03:41:15] PID:12658 CODE:0 Makefile
+cat
+client
+code
+config
+echo
+logs
+scripts
+server
+texp.txt
 
