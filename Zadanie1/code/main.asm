@@ -55,14 +55,14 @@ _main:                           // Start of the main function
     stp x29, x30, [sp, #-16]!    // Save values for return upon function exit
     mov x29, sp                  // Set the frame pointer (FP) to the current SP value
     
-    mov x22, x1                  // Save arguments from register x1 (argv) to register x35
+    mov x22, x1                  // Save arguments from register x1 (argv) to register x22
     mov x20, x0                  // Save the number of arguments in x20
 
     cmp x0, #1                   // Compare the number of arguments with 1
     beq print_error              // If less, call the error function; otherwise, continue
     
     mov x25, #3                  // Set the default flag to lower_to_upper
-    ldr x1, [x22, #8]            // Load the user argument from register x19 into x1
+    ldr x1, [x22, #8]            // Load the user argument from register x22 into x1
     
     ldrb w2, [x1]                // Load the first character from the first register into w2
     cmp w2, #0x2D                // Check if the character is "-" in ASCII
